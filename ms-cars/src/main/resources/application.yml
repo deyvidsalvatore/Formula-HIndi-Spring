@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ms-cars
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/db_mscars?authSource=admin
+server:
+  port: ${PORT:8000}
