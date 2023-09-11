@@ -14,3 +14,6 @@ server:
 rabbitmq:
   queue:
     name: race-result-queue
+springdoc:
+  api-docs:
+    path: /api-docs

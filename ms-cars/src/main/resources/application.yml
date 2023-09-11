@@ -6,3 +6,6 @@ spring:
       uri: mongodb://root:root@localhost:27017/db_mscars?authSource=admin
 server:
   port: ${PORT:8000}
+springdoc:
+  api-docs:
+    path: /api-docs
