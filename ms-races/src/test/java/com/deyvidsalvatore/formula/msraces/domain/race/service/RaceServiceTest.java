@@ -6,6 +6,7 @@ import com.deyvidsalvatore.formula.msraces.domain.race.model.Race;
 import com.deyvidsalvatore.formula.msraces.domain.race.model.Track;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ class RaceServiceTest {
     @BeforeEach
     public void setUp() {
         carsFeignClient = mock(CarsFeignClient.class);
-        raceService = new RaceService(carsFeignClient);
+        RabbitTemplate rabbitTemplate = mock(RabbitTemplate.class);
+        raceService = new RaceService(carsFeignClient, rabbitTemplate);
     }
 
     @Test

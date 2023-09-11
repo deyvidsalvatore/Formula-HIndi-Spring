@@ -5,7 +5,13 @@ import com.deyvidsalvatore.formula.msraces.domain.race.model.Car;
 import com.deyvidsalvatore.formula.msraces.domain.race.model.CarPosition;
 import com.deyvidsalvatore.formula.msraces.domain.race.model.Race;
 import com.deyvidsalvatore.formula.msraces.domain.race.model.Track;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -21,8 +28,12 @@ public class RaceService {
 
     private final CarsFeignClient carsFeignClient;
 
-    public RaceService(CarsFeignClient carsFeignClient) {
+    private final RabbitTemplate rabbitTemplate;
+
+    @Autowired(required = false)
+    public RaceService(CarsFeignClient carsFeignClient, RabbitTemplate rabbitTemplate) {
         this.carsFeignClient = carsFeignClient;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public Race startRace(Track trackRequest) {
@@ -66,9 +77,22 @@ public class RaceService {
         Car winner = determineWinner(carPositions);
 
         Race race = new Race();
+        race.setId(UUID.randomUUID());
         race.setCars(selectedCars);
         race.setWinner(winner);
         race.setTrack(new Track(trackRequest.getName(), trackRequest.getCountry(), trackRequest.getDate()));
+
+        String raceJson = convertRaceToJson(race);
+
+        if (raceJson != null) {
+            Message message = MessageBuilder
+                    .withBody(raceJson.getBytes())
+                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                    .build();
+
+            rabbitTemplate.send("race-result-queue", message);
+            log.info("Result of the race on RabbitMQ: {}", raceJson);
+        }
 
         return race;
     }
@@ -120,5 +144,16 @@ public class RaceService {
     private boolean isValidDate(String date) {
         return date.matches("\\d{4}-\\d{2}-\\d{2}");
     }
+
+    private String convertRaceToJson(Race race) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(race);
+        } catch (Exception e) {
+            log.error("Error to Convert Race to JSON: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
 }
 
