@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: ms-history
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/db_msraces?authSource=admin
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+server:
+  port: ${PORT:8200}
+rabbitmq:
+  queue:
+    name: race-result-queue
