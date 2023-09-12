@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      routes:
+        - id: cars-route
+          uri: lb://ms-cars
+          predicates:
+            - Path=/api/v1/cars/**
+        - id: history-route
+          uri: lb://ms-history
+          predicates:
+            - Path=/api/v1/history/**
+        - id: races-route
+          uri: lb://ms-races
+          predicates:
+            - Path=/api/v1/races/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 5
+server:
+  port: 8765

@@ -1,0 +1,92 @@
+[
+  {
+    "brand": "Toyota",
+    "model": "Camry",
+    "pilot": {
+      "name": "John Smith",
+      "age": 25
+    },
+    "year": "2014"
+  },
+  {
+    "brand": "Honda",
+    "model": "Civic",
+    "pilot": {
+      "name": "Emma Johnson",
+      "age": 28
+    },
+    "year": "2016"
+  },
+  {
+    "brand": "Ford",
+    "model": "Mustang",
+    "pilot": {
+      "name": "Michael Brown",
+      "age": 23
+    },
+    "year": "2018"
+  },
+  {
+    "brand": "Chevrolet",
+    "model": "Malibu",
+    "pilot": {
+      "name": "Olivia Davis",
+      "age": 30
+    },
+    "year": "2015"
+  },
+  {
+    "brand": "Nissan",
+    "model": "Altima",
+    "pilot": {
+      "name": "James Wilson",
+      "age": 22
+    },
+    "year": "2017"
+  },
+  {
+    "brand": "BMW",
+    "model": "X5",
+    "pilot": {
+      "name": "Sophia Martinez",
+      "age": 29
+    },
+    "year": "2019"
+  },
+  {
+    "brand": "Hyundai",
+    "model": "Elantra",
+    "pilot": {
+      "name": "Daniel Taylor",
+      "age": 26
+    },
+    "year": "2013"
+  },
+  {
+    "brand": "Volkswagen",
+    "model": "Jetta",
+    "pilot": {
+      "name": "Ava Anderson",
+      "age": 21
+    },
+    "year": "2016"
+  },
+  {
+    "brand": "Mercedes-Benz",
+    "model": "C-Class",
+    "pilot": {
+      "name": "Ethan Garcia",
+      "age": 27
+    },
+    "year": "2020"
+  },
+  {
+    "brand": "Audi",
+    "model": "A4",
+    "pilot": {
+      "name": "Mia Moore",
+      "age": 24
+    },
+    "year": "2017"
+  }
+]

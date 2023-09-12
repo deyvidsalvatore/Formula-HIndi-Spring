@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ms-races
+server:
+  port: ${PORT:8100}
+springdoc:
+  api-docs:
+    path: /api-docs
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 5

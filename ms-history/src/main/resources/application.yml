@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: ms-history
+  data:
+    mongodb:
+      uri: mongodb://root:root@mongodb-database:27017/db_mshistory?authSource=admin
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+server:
+  port: ${PORT:8200}
+rabbitmq:
+  queue:
+    name: race-result-queue
+springdoc:
+  api-docs:
+    path: /api-docs
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 5

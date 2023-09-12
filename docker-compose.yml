@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  mongodb-database:
+    image: "mongo:latest"
+    container_name: mongodb-database
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - formula-system
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  eureka-server:
+    build:
+      context: ./eurekaserver
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    networks:
+      - formula-system
+    depends_on:
+      - mongodb-database
+
+  api-gateway:
+    build:
+      context: ./apigateway
+    ports:
+      - "8765:8765"
+    expose:
+      - "8765"
+    environment:
+      - PORT=8765
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    networks:
+      - formula-system
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eureka-server:8761"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      - eureka-server
+
+  ms-cars:
+    build:
+      context: ./ms-cars
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    networks:
+      - formula-system
+    depends_on:
+      - eureka-server
+      - mongodb-database
+
+  ms-history:
+    build:
+      context: ./ms-history
+    ports:
+      - "8200:8200"
+    environment:
+      - PORT=8200
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    networks:
+      - formula-system
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - mongodb-database
+
+  ms-races:
+    build:
+      context: ./ms-races
+    ports:
+      - "8100:8100"
+    environment:
+      - PORT=8100
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    networks:
+      - formula-system
+    depends_on:
+      - eureka-server
+      - mongodb-database
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - formula-system
+
+networks:
+  formula-system:
+    driver: bridge
+
+volumes:
+  mongodb-data:
