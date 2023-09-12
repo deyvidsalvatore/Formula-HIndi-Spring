@@ -3,9 +3,9 @@ spring:
     name: ms-history
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/db_msraces?authSource=admin
+      uri: mongodb://root:root@mongodb-database:27017/db_mshistory?authSource=admin
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest
@@ -20,4 +20,6 @@ springdoc:
 eureka:
   client:
     service-url:
-      default-zone: ${EUREKA_URL:http://localhost:8761/eureka}
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 5
