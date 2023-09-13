@@ -2,6 +2,8 @@
 <b>Spring Boot - Back-End Journey | AWS (19/06)</b><br>
 ### Compass Scholarship Program - Challenger 12
 Create 3 microservices (ms-cars, ms-history, ms-races) based on the rule in this <a href="https://rentry.co/3zy2hc">document</a>.
+### Kaban Board
+This is activities from the project → https://github.com/users/deyvidsalvatore/projects/2
 ### Pre-Requisites
 * Docker
 * Docker Compose
